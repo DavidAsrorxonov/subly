@@ -13,11 +13,14 @@ const SubscriptionCard = ({
   category,
   plan,
   renewalDate,
+  onPress,
+  expanded,
 }: SubscriptionCardProps) => {
   return (
     <Pressable
-      className={clsx("sub-card", "bg-card")}
-      style={color ? { backgroundColor: color } : undefined}
+      onPress={onPress}
+      className={clsx("sub-card", expanded ? "sub-card-expanded" : "bg-card")}
+      style={!expanded && color ? { backgroundColor: color } : undefined}
     >
       <View className="sub-head">
         <View className="sub-main">
