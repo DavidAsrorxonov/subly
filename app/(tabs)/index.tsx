@@ -47,6 +47,12 @@ export default function App() {
         <FlatList
           data={UPCOMING_SUBSCRIPTIONS}
           renderItem={({ item }) => <UpcomingSubscriptionCard {...item} />}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ListEmptyComponent={
+            <Text className="home-empty-state">No upcoming renewals yet.</Text>
+          }
         />
       </View>
 
