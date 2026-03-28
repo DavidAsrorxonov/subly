@@ -1,0 +1,162 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
+
+@theme {
+  --color-background: #fffdf7;
+  --color-foreground: #2f2419;
+
+  --color-card: #fffaf0;
+  --color-card-foreground: #2f2419;
+
+  --color-popover: #fffaf0;
+  --color-popover-foreground: #2f2419;
+
+  --color-primary: #f59e0b;
+  --color-primary-foreground: #1f1300;
+
+  --color-secondary: #f8edd3;
+  --color-secondary-foreground: #5b4630;
+
+  --color-muted: #f7f1e4;
+  --color-muted-foreground: #8a775f;
+
+  --color-accent: #fff3d6;
+  --color-accent-foreground: #9a5b12;
+
+  --color-border: #eadfcb;
+  --color-input: #eadfcb;
+  --color-ring: #f59e0b;
+
+  --color-success: #16a34a;
+  --color-destructive: #dc2626;
+
+  --color-subscription: #fff1cc;
+
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-7: 28px;
+  --spacing-8: 32px;
+  --spacing-9: 36px;
+  --spacing-10: 40px;
+  --spacing-11: 44px;
+  --spacing-12: 48px;
+  --spacing-14: 56px;
+  --spacing-16: 64px;
+  --spacing-18: 72px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+  --spacing-30: 120px;
+
+  --font-sans: sans-regular;
+  --font-sans-light: sans-light;
+  --font-sans-medium: sans-medium;
+  --font-sans-semibold: sans-semibold;
+  --font-sans-bold: sans-bold;
+  --font-sans-extrabold: sans-extrabold;
+}
+
+@layer components {
+  .tabs-active {
+    @apply bg-primary;
+  }
+
+  .home-balance-card {
+    @apply my-2.5 min-h-50 justify-between gap-5 rounded-bl-4xl rounded-tr-4xl bg-primary p-6;
+  }
+
+  .home-balance-label {
+    @apply text-xl font-sans-semibold text-primary-foreground/80;
+  }
+
+  .home-balance-amount {
+    @apply text-4xl font-sans-extrabold text-primary-foreground;
+  }
+
+  .home-balance-date {
+    @apply text-xl font-sans-medium text-primary-foreground;
+  }
+
+  .auth-logo-mark {
+    @apply relative size-14 items-center justify-center rounded-2xl bg-primary;
+  }
+
+  .auth-logo-mark-text {
+    @apply text-2xl font-sans-extrabold text-primary-foreground;
+  }
+
+  .auth-button {
+    @apply mt-1 items-center rounded-2xl bg-primary py-4;
+  }
+
+  .auth-button-disabled {
+    @apply bg-primary/45;
+  }
+
+  .auth-button-text {
+    @apply text-base font-sans-bold text-primary-foreground;
+  }
+
+  .auth-secondary-button {
+    @apply items-center rounded-2xl border border-primary/25 bg-primary/10 py-3;
+  }
+
+  .auth-secondary-button-text {
+    @apply text-sm font-sans-semibold text-primary;
+  }
+
+  .picker-option-active {
+    @apply border-primary bg-primary/10;
+  }
+
+  .picker-option-text-active {
+    @apply text-primary;
+  }
+
+  .category-chip-active {
+    @apply border-primary bg-primary/10;
+  }
+
+  .category-chip-text-active {
+    @apply text-primary;
+  }
+
+  .sub-card-expanded {
+    @apply border-primary/20 bg-subscription;
+  }
+
+  .sub-cancel {
+    @apply mt-2 items-center rounded-full bg-primary py-4;
+  }
+
+  .sub-cancel-text {
+    @apply font-sans-bold text-primary-foreground;
+  }
+
+  .list-action {
+    @apply rounded-full border border-border bg-card px-4 py-1;
+  }
+
+  .upcoming-card {
+    @apply mr-4 w-44 rounded-2xl border border-border bg-card p-4;
+  }
+
+  .auth-card {
+    @apply mt-8 rounded-3xl border border-border bg-card p-5;
+  }
+
+  .auth-input {
+    @apply rounded-2xl border border-input bg-background px-4 py-4 text-base font-sans-medium text-foreground;
+  }
+
+  .modal-close {
+    @apply size-8 items-center justify-center rounded-full bg-muted;
+  }
+}
