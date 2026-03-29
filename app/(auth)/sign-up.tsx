@@ -1,9 +1,16 @@
-import { useAuth, useSignUp } from '@clerk/expo';
-import clsx from 'clsx';
-import { type Href, Link, useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Pressable, Text, TextInput, View, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAuth, useSignUp } from "@clerk/expo";
+import clsx from "clsx";
+import { type Href, Link, useRouter } from "expo-router";
+import React, { useState } from "react";
+import {
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SignUpScreen() {
   const { signUp, errors, fetchStatus } = useSignUp();
@@ -11,18 +18,18 @@ export default function SignUpScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
-  const [code, setCode] = useState('');
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
 
   const handleSubmit = async () => {
     if (!signUp) return;
-    
+
     const { error } = await (signUp as any).password({
       emailAddress,
       password,
     });
-    
+
     if (error) {
       console.error(JSON.stringify(error, null, 2));
       return;
@@ -33,12 +40,12 @@ export default function SignUpScreen() {
 
   const handleVerify = async () => {
     if (!signUp) return;
-    
+
     await (signUp as any).verifications.verifyEmailCode({
       code,
     });
-    
-    if (signUp.status === 'complete') {
+
+    if (signUp.status === "complete") {
       await (signUp as any).finalize({
         navigate: ({ session, decorateUrl }: any) => {
           if (session?.currentTask) {
@@ -46,32 +53,35 @@ export default function SignUpScreen() {
             return;
           }
 
-          const url = decorateUrl('/');
-          if (url.startsWith('http')) {
+          const url = decorateUrl("/");
+          if (Platform.OS === "web" && url.startsWith("http")) {
             window.location.href = url;
           } else {
-            router.push(url as Href);
+            router.replace(url as Href);
           }
         },
       });
     } else {
-      console.error('Sign-up attempt not complete:', signUp);
+      console.error("Sign-up attempt not complete:", signUp);
     }
   };
 
-  if ((signUp as any)?.status === 'complete' || isSignedIn) {
+  if ((signUp as any)?.status === "complete" || isSignedIn) {
     return null;
   }
 
   // Verification Mode
   if (
-    (signUp as any)?.status === 'missing_requirements' &&
-    (signUp as any).unverifiedFields.includes('email_address') &&
+    (signUp as any)?.status === "missing_requirements" &&
+    (signUp as any).unverifiedFields.includes("email_address") &&
     (signUp as any).missingFields.length === 0
   ) {
     return (
       <View style={{ paddingTop: insets.top }} className="auth-safe-area">
-        <ScrollView className="auth-scroll" showsVerticalScrollIndicator={false}>
+        <ScrollView
+          className="auth-scroll"
+          showsVerticalScrollIndicator={false}
+        >
           <View className="auth-content mt-12">
             <View className="auth-brand-block mb-8">
               <View className="auth-logo-wrap">
@@ -84,7 +94,9 @@ export default function SignUpScreen() {
                 </View>
               </View>
               <Text className="auth-title">Verify your account</Text>
-              <Text className="auth-subtitle">We sent a verification code to your email</Text>
+              <Text className="auth-subtitle">
+                We sent a verification code to your email
+              </Text>
             </View>
 
             <View className="auth-card">
@@ -92,7 +104,10 @@ export default function SignUpScreen() {
                 <View className="auth-field">
                   <Text className="auth-label">Verification Code</Text>
                   <TextInput
-                    className={clsx("auth-input", (errors as any)?.fields?.code && "auth-input-error")}
+                    className={clsx(
+                      "auth-input",
+                      (errors as any)?.fields?.code && "auth-input-error",
+                    )}
                     value={code}
                     placeholder="Enter verification code"
                     placeholderTextColor="#8a775f"
@@ -100,28 +115,32 @@ export default function SignUpScreen() {
                     keyboardType="numeric"
                   />
                   {(errors as any)?.fields?.code && (
-                    <Text className="auth-error">{(errors as any).fields.code.message}</Text>
+                    <Text className="auth-error">
+                      {(errors as any).fields.code.message}
+                    </Text>
                   )}
                 </View>
 
                 <Pressable
                   className={clsx(
                     "auth-button mt-2",
-                    fetchStatus === 'fetching' && "auth-button-disabled"
+                    fetchStatus === "fetching" && "auth-button-disabled",
                   )}
                   onPress={handleVerify}
-                  disabled={fetchStatus === 'fetching'}
+                  disabled={fetchStatus === "fetching"}
                   style={({ pressed }) => pressed && { opacity: 0.8 }}
                 >
                   <Text className="auth-button-text">Verify Account</Text>
                 </Pressable>
-                
+
                 <Pressable
                   className="auth-secondary-button mt-2"
                   onPress={() => (signUp as any).verifications.sendEmailCode()}
                   style={({ pressed }) => pressed && { opacity: 0.8 }}
                 >
-                  <Text className="auth-secondary-button-text">Resend Code</Text>
+                  <Text className="auth-secondary-button-text">
+                    Resend Code
+                  </Text>
                 </Pressable>
               </View>
             </View>
@@ -136,7 +155,6 @@ export default function SignUpScreen() {
     <View style={{ paddingTop: insets.top }} className="auth-safe-area">
       <ScrollView className="auth-scroll" showsVerticalScrollIndicator={false}>
         <View className="auth-content mt-12">
-          
           <View className="auth-brand-block">
             <View className="auth-logo-wrap">
               <View className="auth-logo-mark">
@@ -148,7 +166,9 @@ export default function SignUpScreen() {
               </View>
             </View>
             <Text className="auth-title">Sign Up</Text>
-            <Text className="auth-subtitle">Create a new account to easily manage your subscriptions</Text>
+            <Text className="auth-subtitle">
+              Create a new account to easily manage your subscriptions
+            </Text>
           </View>
 
           <View className="auth-card">
@@ -156,7 +176,10 @@ export default function SignUpScreen() {
               <View className="auth-field">
                 <Text className="auth-label">Email</Text>
                 <TextInput
-                  className={clsx("auth-input", (errors as any)?.fields?.emailAddress && "auth-input-error")}
+                  className={clsx(
+                    "auth-input",
+                    (errors as any)?.fields?.emailAddress && "auth-input-error",
+                  )}
                   autoCapitalize="none"
                   value={emailAddress}
                   placeholder="Enter email"
@@ -165,14 +188,19 @@ export default function SignUpScreen() {
                   keyboardType="email-address"
                 />
                 {(errors as any)?.fields?.emailAddress && (
-                  <Text className="auth-error">{(errors as any).fields.emailAddress.message}</Text>
+                  <Text className="auth-error">
+                    {(errors as any).fields.emailAddress.message}
+                  </Text>
                 )}
               </View>
 
               <View className="auth-field">
                 <Text className="auth-label">Password</Text>
                 <TextInput
-                  className={clsx("auth-input", (errors as any)?.fields?.password && "auth-input-error")}
+                  className={clsx(
+                    "auth-input",
+                    (errors as any)?.fields?.password && "auth-input-error",
+                  )}
                   value={password}
                   placeholder="Create a password"
                   placeholderTextColor="#8a775f"
@@ -180,24 +208,29 @@ export default function SignUpScreen() {
                   onChangeText={setPassword}
                 />
                 {(errors as any)?.fields?.password && (
-                  <Text className="auth-error">{(errors as any).fields.password.message}</Text>
+                  <Text className="auth-error">
+                    {(errors as any).fields.password.message}
+                  </Text>
                 )}
               </View>
 
               <Pressable
                 className={clsx(
                   "auth-button mt-4",
-                  (!emailAddress || !password || fetchStatus === 'fetching') && "auth-button-disabled"
+                  (!emailAddress || !password || fetchStatus === "fetching") &&
+                    "auth-button-disabled",
                 )}
                 onPress={handleSubmit}
-                disabled={!emailAddress || !password || fetchStatus === 'fetching'}
+                disabled={
+                  !emailAddress || !password || fetchStatus === "fetching"
+                }
                 style={({ pressed }) => pressed && { opacity: 0.8 }}
               >
                 <Text className="auth-button-text">Create Account</Text>
               </Pressable>
             </View>
 
-            <View style={{ display: 'none' }} nativeID="clerk-captcha" />
+            <View style={{ display: "none" }} nativeID="clerk-captcha" />
 
             <View className="auth-link-row mt-6">
               <Text className="auth-link-copy">Already have an account?</Text>
@@ -208,7 +241,6 @@ export default function SignUpScreen() {
               </Link>
             </View>
           </View>
-
         </View>
       </ScrollView>
     </View>
