@@ -1,0 +1,52 @@
+[
+  {
+    "event": "user_signed_in",
+    "description": "Fired when a user successfully completes sign-in (including MFA if required). Used to track authentication conversion and identify users in PostHog.",
+    "file": "app/(auth)/sign-in.tsx"
+  },
+  {
+    "event": "user_signed_up",
+    "description": "Fired when a user successfully completes sign-up and email verification. Used to identify new users and track registration conversion.",
+    "file": "app/(auth)/sign-up.tsx"
+  },
+  {
+    "event": "user_signed_out",
+    "description": "Fired when a user taps the Sign Out button in Settings. Used to track churn signals and reset PostHog identity.",
+    "file": "app/(tabs)/settings.tsx"
+  },
+  {
+    "event": "mfa_code_verified",
+    "description": "Fired when a user successfully verifies an MFA email code during sign-in. Tracks MFA completion rate.",
+    "file": "app/(auth)/sign-in.tsx"
+  },
+  {
+    "event": "sign_in_failed",
+    "description": "Fired when a sign-in attempt results in an error. Helps identify authentication friction.",
+    "file": "app/(auth)/sign-in.tsx"
+  },
+  {
+    "event": "sign_up_failed",
+    "description": "Fired when a sign-up attempt results in an error. Helps identify registration friction.",
+    "file": "app/(auth)/sign-up.tsx"
+  },
+  {
+    "event": "subscription_card_expanded",
+    "description": "Fired when a user taps a subscription card to expand its details. Tracks engagement with subscription detail view.",
+    "file": "components/subscription-card.tsx"
+  },
+  {
+    "event": "onboarding_viewed",
+    "description": "Fired when a user lands on the onboarding screen. Top of the new-user conversion funnel.",
+    "file": "app/onboarding.tsx"
+  },
+  {
+    "event": "subscription_details_viewed",
+    "description": "Fired when a user opens the full subscription detail screen. Top of the subscription detail conversion funnel.",
+    "file": "app/subscriptions/[id].tsx"
+  },
+  {
+    "event": "add_subscription_tapped",
+    "description": "Fired when a user taps the add subscription icon on the home dashboard. Tracks intent to add a new subscription.",
+    "file": "app/(tabs)/index.tsx"
+  }
+]

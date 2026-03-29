@@ -6,6 +6,7 @@ import {
 import clsx from "clsx";
 import React from "react";
 import { Image, Pressable, Text, View } from "react-native";
+import { usePostHog } from "posthog-react-native";
 
 const SubscriptionCard = ({
   name,
@@ -23,9 +24,21 @@ const SubscriptionCard = ({
   startDate,
   status,
 }: SubscriptionCardProps) => {
+  const posthog = usePostHog();
+
+  const handlePress = () => {
+    if (!expanded) {
+      posthog?.capture("subscription_card_expanded", {
+        subscription_name: name,
+        subscription_category: category ?? plan ?? null,
+      });
+    }
+    onPress?.();
+  };
+
   return (
     <Pressable
-      onPress={onPress}
+      onPress={handlePress}
       className={clsx("sub-card", expanded ? "sub-card-expanded" : "bg-card")}
       style={!expanded && color ? { backgroundColor: color } : undefined}
     >

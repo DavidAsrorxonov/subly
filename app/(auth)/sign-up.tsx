@@ -11,12 +11,14 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { usePostHog } from "posthog-react-native";
 
 export default function SignUpScreen() {
   const { signUp, errors, fetchStatus } = useSignUp();
   const { isSignedIn } = useAuth();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const posthog = usePostHog();
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +34,7 @@ export default function SignUpScreen() {
 
     if (error) {
       console.error(JSON.stringify(error, null, 2));
+      posthog?.capture("sign_up_failed", { error_message: error.message ?? "unknown" });
       return;
     }
 
@@ -52,6 +55,9 @@ export default function SignUpScreen() {
             console.log(session?.currentTask);
             return;
           }
+
+          posthog?.identify(emailAddress, { email: emailAddress });
+          posthog?.capture("user_signed_up");
 
           const url = decorateUrl("/");
           if (Platform.OS === "web" && url.startsWith("http")) {

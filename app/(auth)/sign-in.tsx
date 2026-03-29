@@ -1,6 +1,7 @@
 import { useSignIn } from "@clerk/expo";
 import clsx from "clsx";
 import { type Href, Link, useRouter } from "expo-router";
+import { usePostHog } from "posthog-react-native";
 import React, { useState } from "react";
 import {
   Platform,
@@ -16,6 +17,7 @@ export default function SignInScreen() {
   const { signIn, errors, fetchStatus } = useSignIn();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const posthog = usePostHog();
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +34,9 @@ export default function SignInScreen() {
 
     if (error) {
       console.error(JSON.stringify(error, null, 2));
+      posthog?.capture("sign_in_failed", {
+        error_message: error.message ?? "unknown",
+      });
       return;
     }
 
@@ -42,6 +47,9 @@ export default function SignInScreen() {
             console.log(session?.currentTask);
             return;
           }
+
+          posthog?.identify(emailAddress, { email: emailAddress });
+          posthog?.capture("user_signed_in", { method: "password" });
 
           const url = decorateUrl("/");
           if (Platform.OS === "web" && url.startsWith("http")) {
@@ -75,6 +83,10 @@ export default function SignInScreen() {
             console.log(session?.currentTask);
             return;
           }
+
+          posthog?.identify(emailAddress, { email: emailAddress });
+          posthog?.capture("mfa_code_verified");
+          posthog?.capture("user_signed_in", { method: "mfa" });
 
           const url = decorateUrl("/");
           if (url.startsWith("http")) {
